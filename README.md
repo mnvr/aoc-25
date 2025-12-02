@@ -7,5 +7,13 @@
 Install [Python 3](https://python.org), then:
 
 ```sh
-cat examples/01-a | python 01.py
+cat examples/01 | python 01.py
+```
+
+## Rust
+
+Install [Rust](https://rust-lang.org/), then:
+
+```sh
+rustc 01.rs && cat examples/01 | ./01
 ```
