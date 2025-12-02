@@ -1,33 +1,21 @@
+use std::error::Error;
 use std::io;
 use std::io::BufRead;
 use std::io::BufReader;
 
-fn main() -> io::Result<()> {
+fn main() -> Result<(), Box<dyn Error>> {
     let reader = BufReader::new(io::stdin());
-    let mut v: Vec<i32> = Vec::new();
     let mut pos = 50;
     let mut z = 0;
 
     for line in reader.lines() {
-        println!("{:#?}", line);
-        let s = line.unwrap();
-        println!("{:#?}", s);
-        let (first, rest) = s.split_at(1);
-        println!("{} {}", first, rest);
+        let s = line?;
+        let d = if &s[..1] == "L" { -1 } else { 1 };
+        let steps = s[1..].parse::<i32>()? * d;
 
-        let steps: i32 = rest.parse().unwrap();
-        println!("{}", steps);
+        let npos = pos + steps;
 
-        let mut isteps = steps;
-        if first == "L" {
-            isteps = -1 * steps;
-        }
-        println!("{}", isteps);
-        v.push(isteps);
-
-        let npos = pos + isteps;
-
-        let m = npos.div_euclid(100);
+        let _m = npos.div_euclid(100);
         let p = npos.rem_euclid(100);
 
         if p == 0 {
@@ -36,10 +24,6 @@ fn main() -> io::Result<()> {
 
         pos = p;
     }
-    println!("Output: {}", z);
-    // let mut input = String::new();
-    // let r = io::stdin().read_line(&mut input)?;
-    // println!("read_line returned:: {:#?}", r);
-    // println!("You typed:: {:#?}", input.trim());
+    println!("{z}");
     Ok(())
 }
