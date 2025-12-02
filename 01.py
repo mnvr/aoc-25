@@ -1,10 +1,7 @@
 import sys
 
-pos = 50
-z1 = 0
-z2 = 0
-input = [(-1 if s[0] == 'L' else 1) * int(s[1:]) for s in sys.stdin]
-for steps in input:
+pos, z1, z2 = 50, 0, 0
+for steps in [(-1 if s[0] == 'L' else 1) * int(s[1:]) for s in sys.stdin]:
     (m, p) = divmod(pos + steps, 100)
     if m < 0 and pos == 0:
         m += 1

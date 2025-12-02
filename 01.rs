@@ -4,12 +4,8 @@ use std::io::BufRead;
 use std::io::BufReader;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let reader = BufReader::new(io::stdin());
-    let mut pos = 50;
-    let mut z1 = 0;
-    let mut z2 = 0;
-
-    for line in reader.lines() {
+    let (mut pos, mut z1, mut z2) = (50, 0, 0);
+    for line in BufReader::new(io::stdin()).lines() {
         let s = line?;
         let d = if &s[..1] == "L" { -1 } else { 1 };
         let steps = s[1..].parse::<i32>()? * d;
