@@ -7,14 +7,14 @@ fn main() {
 
         let npos = pos + steps;
 
-        let mut m = npos.div_euclid(100);
+        let m = npos.div_euclid(100);
         let p = npos.rem_euclid(100);
 
         if m < 0 && pos == 0 {
-            m += 1;
+            z2 -= 1;
         }
         if m > 0 && p == 0 {
-            m -= 1;
+            z2 -= 1;
         }
 
         z1 += if p == 0 { 1 } else { 0 };
