@@ -6,7 +6,8 @@ use std::io::BufReader;
 fn main() -> Result<(), Box<dyn Error>> {
     let reader = BufReader::new(io::stdin());
     let mut pos = 50;
-    let mut z = 0;
+    let mut z1 = 0;
+    let mut z2 = 0;
 
     for line in reader.lines() {
         let s = line?;
@@ -15,15 +16,21 @@ fn main() -> Result<(), Box<dyn Error>> {
 
         let npos = pos + steps;
 
-        let _m = npos.div_euclid(100);
+        let mut m = npos.div_euclid(100);
         let p = npos.rem_euclid(100);
 
-        if p == 0 {
-            z += 1;
+        if m < 0 && pos == 0 {
+            m += 1;
         }
+        if m > 0 && p == 0 {
+            m -= 1;
+        }
+
+        z1 += if p == 0 { 1 } else { 0 };
+        z2 += m.abs();
 
         pos = p;
     }
-    println!("{z}");
+    println!("{} {}", z1, z1 + z2);
     Ok(())
 }
