@@ -1,11 +1,9 @@
-use std::{error::Error, io::stdin};
-
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() {
     let (mut pos, mut z1, mut z2) = (50, 0, 0);
-    for line in stdin().lines() {
-        let s = line?;
-        let d = if &s[..1] == "L" { -1 } else { 1 };
-        let steps = s[1..].parse::<i32>()? * d;
+    for line in std::io::stdin().lines().map(|s| s.unwrap()) {
+        let (head, tail) = line.split_at(1);
+        let d = if head == "L" { -1 } else { 1 };
+        let steps = tail.parse::<i32>().unwrap() * d;
 
         let npos = pos + steps;
 
@@ -24,6 +22,6 @@ fn main() -> Result<(), Box<dyn Error>> {
 
         pos = p;
     }
+
     println!("{} {}", z1, z1 + z2);
-    Ok(())
 }
