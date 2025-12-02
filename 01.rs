@@ -1,11 +1,8 @@
-use std::error::Error;
-use std::io;
-use std::io::BufRead;
-use std::io::BufReader;
+use std::{error::Error, io::stdin};
 
 fn main() -> Result<(), Box<dyn Error>> {
     let (mut pos, mut z1, mut z2) = (50, 0, 0);
-    for line in BufReader::new(io::stdin()).lines() {
+    for line in stdin().lines() {
         let s = line?;
         let d = if &s[..1] == "L" { -1 } else { 1 };
         let steps = s[1..].parse::<i32>()? * d;
