@@ -1,16 +1,8 @@
 import sys
 
-iv = 0
-iv2 = 0
+iv, iv2 = 0, 0
 for r in sys.stdin.read().strip().split(','):
     (u, v) = [int(s) for s in r.split('-')]
-    for x in range(u, v + 1):
-        s = str(x)
-        n = len(s)
-        if n % 2 == 1:
-            continue
-        if s[0:n//2] == s[n//2:]:
-            iv += x
     for x in range(u, v + 1):
         s = str(x)
         n = len(s)
@@ -23,6 +15,8 @@ for r in sys.stdin.read().strip().split(','):
                     break
                 j += i
             if j == n:
+                if i + i == n:
+                    iv += x
                 iv2 += x
                 break
 
