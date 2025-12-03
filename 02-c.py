@@ -1,5 +1,6 @@
 def rep(n):
     match n:
+        case 1: return []
         case 2: return rep2()
         case 3: return rep1(n)
         case 4: return rep4()
@@ -31,25 +32,12 @@ def rep9():
 def rep10():
     return [r*10**8 + r*10**6 + r*10**4 + r*10**2 + r for r in range(10, 100)] + [r*10**5 + r for r in range(10000, 100000)]
 
-def check_range(a, b):
+def check_range(s):
+    (a, b) = [int(x) for x in s.split('-')]
     rs = set(rep(len(str(a))) + rep(len(str(b))))
-    span = range(a, b + 1)
-    for r in rs:
-        if r in span:
-            yield r
-
-def to_range(s):
-    return [int(x) for x in s.split('-')]
+    return [r for r in rs if r in range(a, b + 1)]
 
 import sys
-print(sum([x for s in sys.stdin.read().strip().split(',') for x in check_range(*to_range(s))]))
-# sum([x for x in check_range(*to_range(s)) for s in sys.stdin.read().strip().split(',')])
-
-# check_range(11, 22)
-# check_range(95, 115)
-# check_range(998, 1012)
-# check_range(222220, 222224)
-# check_range(446443, 446449)
-# check_range(38593856, 38593862)
-# check_range(1188511880, 1188511890)
-# # print(sorted(rep(10)))
+ranges = sys.stdin.read().strip().split(',')
+p2 = sum([x for r in ranges for x in check_range(r)])
+print(p2)
