@@ -11,6 +11,16 @@ def rep(n):
         case 9: return rep9()
         case 10: return rep10()
 
+def rep_even(n):
+    if n % 2 == 1:
+        return []
+    match n:
+        case 2: return rep2()
+        case 4: return rep4()
+        case 6: return rep6()
+        case 8: return rep8()
+        case 10: return rep10()
+
 def rep1(n):
     return [sum([c * 10**i for i in range(0, n)]) for c in range(1, 10)]
 
@@ -35,9 +45,15 @@ def rep10():
 def check_range(s):
     (a, b) = [int(x) for x in s.split('-')]
     rs = set(rep(len(str(a))) + rep(len(str(b))))
-    return [r for r in rs if r in range(a, b + 1)]
+    all = [r for r in rs if r in range(a, b + 1)]
+    even = [r for r in all if r//(h := 10**(len(str(r))//2)) == r%h]
+    return (even, all)
 
 import sys
 ranges = sys.stdin.read().strip().split(',')
-p2 = sum([x for r in ranges for x in check_range(r)])
-print(p2)
+p1, p2 = 0, 0
+for r in ranges:
+    (even, all) = check_range(r)
+    p1 += sum(even)
+    p2 += sum(all)
+print(p1, p2)
