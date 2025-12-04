@@ -32,6 +32,11 @@ hyperfine --input inputs/01 ./01
 
 ## Ahas
 
-- **[Day 1](https://mastodon.social/@jukkasuomela.fi@bsky.brid.gy/115650037243506402)** - "Always rotate right, flip the dial if needed"
+- **[Day 1](https://mastodon.social/@jukkasuomela.fi@bsky.brid.gy/115650037243506402)** - "Always rotate right, flip the dial if needed".
 
-- **[Day 2](https://www.reddit.com/r/adventofcode/comments/1pc0le8/2025_day_2_part_2_time_to_reach_for_that_trusty/nrup8b2/)** - "You only have to construct the values that are made out of repeated digit strings and then see if the result is the range, not check every number in the range to see if it's made of repeated digit strings"
+- **[Day 2](https://www.reddit.com/r/adventofcode/comments/1pc0le8/2025_day_2_part_2_time_to_reach_for_that_trusty/nrup8b2/)** - "You only have to construct the values that are made out of repeated digit strings and then see if the result is the range, not check every number in the range to see if it's made of repeated digit strings". _Solve the inverse_
+
+| Day | Oblique strategy            |
+| --- | --------------------------- |
+| 1   | _Mirror, transform, mirror_ |
+| 2   | _Solve the inverse_         |
