@@ -28,7 +28,7 @@ hyperfine --input inputs/01 ./01
 | Day | Python | Rust |
 | --- | -----: | ---: |
 | 1   |  19 ms | 4 ms |
-| 2   | 110 ms |    - |
+| 2   |  75 ms |    - |
 | 3   |  80 ms |    - |
 
 ## Ahas
