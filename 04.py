@@ -32,28 +32,39 @@ def pretty2(nx, ns):
         print()
 
 def relax(mx, nx):
+    next_mx = [row[:] for row in mx]
+    next_nx = [row[:] for row in nx]
+    c = 0
     for y in range(0, len(mx)):
         for x in range(0, len(mx[0])):
             if mx[y][x] and nx[y][x] < 4:
-                print(f"- relaxing mx[{y}][{x}] with count {nx[y][x]}")
-                mx[y][x] -= 1
+                # print(f"- relaxing mx[{y}][{x}] with count {nx[y][x]}")
+                c += 1
+                next_mx[y][x] -= 1
                 ns = set()
                 for j in range(max(0, y-1), min(y+2, len(mx))):
                     for i in range(max(0, x-1), min(x+2, len(mx[0]))):
-                        nx[j][i] -= 1
+                        next_nx[j][i] -= 1
                         # print(f"  nx[{j}][{i}]")
                         if not (j == y and i == x):
                             ns.add((j, i))
-                pretty2(nx, ns)
+                # pretty2(nx, ns)
         # return (mx, nx)
-    return (mx, nx)
+    return (next_mx, next_nx, c)
 
 
 nx = neighbours(mx)
 print(pretty(nx))
-(mx, nx) = relax(mx, nx)
-print(pretty(nx))
+c = 1
+s = 0
+while c > 0:
+    (mx, nx, c) = relax(mx, nx)
+# print(pretty(nx))
+    s += c
+    print(c)
 
+print()
+print(s)
 exit()
 
 def valid(mx, y, x):
