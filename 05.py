@@ -16,6 +16,31 @@ for line in sys.stdin:
                 fc += 1
                 break
 
+def sorted_ranges(r):
+    return list(map(lambda t: range(t[0], t[1]), sorted(map(lambda r: (r.start, r.stop), ranges))))
+
+ranges = sorted_ranges(ranges)
+print(ranges)
+
+i = 0
+while i < len(ranges):
+    r1 = ranges[i]
+    print(f"Inspecting range {r1}")
+    j = i + 1
+    while j < len(ranges):
+        r2 = ranges[j]
+        if r2.start <= r1.stop:
+            r1 = range(r1.start, r2.stop)
+            ranges[i] = r1
+            del ranges[j]
+        else:
+            j += 1
+    i += 1
+print(ranges)
+
+print(sum([r.stop - r.start for r in ranges]))
+exit()
+
 def merge(ri, rj):
     u, v = ri.start, ri.stop
     x, y = rj.start, rj.stop
