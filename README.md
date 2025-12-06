@@ -37,11 +37,11 @@ hyperfine --input inputs/01 ./01
 
 - **Day 1** - "Always rotate right, flip the dial if needed" — _[@jukkasuomela](https://mastodon.social/@jukkasuomela.fi@bsky.brid.gy/115650037243506402)_
 
-- **Day 2** - Construct item made of repeated digits and see if they are in range instead of checking item in the range to see if it's made of repeated digits _[@zeekar](https://www.reddit.com/r/adventofcode/comments/1pc0le8/2025_day_2_part_2_time_to_reach_for_that_trusty/nrup8b2/)_
+- **Day 2** - Construct item made of repeated digits and see if they are in range instead of checking item in the range to see if it's made of repeated digits — _[@zeekar](https://www.reddit.com/r/adventofcode/comments/1pc0le8/2025_day_2_part_2_time_to_reach_for_that_trusty/nrup8b2/)_
 
-- **Day 3** - Find the biggest digit in `range(prevBiggest + 1, len - remaining +1)` _[@bingbackbook](https://x.com/bingbackbook/status/1997010921676591518)_
+- **Day 3** - Find the biggest digit in `range(prevBiggest + 1, len - remaining +1)` — _[@bingbackbook](https://x.com/bingbackbook/status/1997010921676591518)_
 
-- **Day 4**: Save paper coordinates as set, intersect with neighbour coordinates to reduce — _[4HbQ](https://old.reddit.com/r/adventofcode/comments/1pdr8x6/2025_day_4_solutions/ns7eynv/)_, _[@znipper](https://old.reddit.com/r/adventofcode/comments/1pdr8x6/2025_day_4_solutions/ns8ggww/)_
+- **Day 4**: Save paper coordinates as set, intersect with neighbour coordinates to reduce — _[@4HbQ](https://old.reddit.com/r/adventofcode/comments/1pdr8x6/2025_day_4_solutions/ns7eynv/)_, _[@znipper](https://old.reddit.com/r/adventofcode/comments/1pdr8x6/2025_day_4_solutions/ns8ggww/)_
 
 ## Oblique strategies
 
