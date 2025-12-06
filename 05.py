@@ -25,6 +25,6 @@ while i < len(ranges):
             break
     i += 1
 
-p1 = sum([1 for id in ids for r in ranges if id in r])
+p1 = sum([id in r for id in ids for r in ranges])
 p2 = sum([r.stop - r.start for r in ranges])
 print(p1, p2)
