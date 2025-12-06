@@ -54,17 +54,20 @@ def relax(mx, nx):
 
 
 nx = neighbours(mx)
-print(pretty(nx))
+# print(pretty(nx))
 c = 1
 s = 0
+c0 = None
 while c > 0:
     (mx, nx, c) = relax(mx, nx)
+    if c0 is None:
+        c0 = c
 # print(pretty(nx))
     s += c
-    print(c)
+    # print(c)
 
-print()
-print(s)
+# print()
+print(c0, s)
 exit()
 
 def valid(mx, y, x):
