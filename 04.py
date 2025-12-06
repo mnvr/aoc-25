@@ -5,8 +5,7 @@ for line in sys.stdin:
     mx.append([0 if c == '.' else 1 for c in line.strip()])
 
 def prune(mx):
-    t = 0
-    nx = [row[:] for row in mx]
+    changed = []
     for y in range(0, len(mx)):
         for x in range(0, len(mx[0])):
             if not mx[y][x]:
@@ -17,14 +16,13 @@ def prune(mx):
                     if not (y == j and x == i):
                         c += mx[j][i]
             if c < 4:
-                t += 1
-                nx[y][x] = 0
-    return (t, nx)
+                changed.append((y, x))
+    for (y, x) in changed:
+        mx[y][x] = 0
+    return len(changed)
 
 s = []
-while True:
-    (t, mx) = prune(mx)
-    if t == 0: break
+while t := prune(mx):
     s.append(t)
 
 print(s[0], sum(s))
