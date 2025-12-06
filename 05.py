@@ -30,36 +30,36 @@ def key(r):
     return (r.start, r.stop)
 
 merged = None
-for _ in range(0, 5):
+for _ in range(0, 300):
     if merged is None:
         merged = {}
     else:
         ranges = list(merged.values())
-    print(ranges)
+    # print(ranges)
     for (i, ri) in enumerate(ranges):
         for (j, rj) in enumerate(ranges):
             if i == j: continue
             ki, kj = key(ri), key(rj)
-            print(f"Considering {ki}, {kj}:", end=' ')
+            # print(f"Considering {ki}, {kj}:", end=' ')
             rm = merge(ri, rj)
             if rm is None:
                 merged[key(ri)] = ri
-                print(f"no overlap, adding {ki}")
+                # print(f"no overlap, adding {ki}")
             else:
                 km = key(rm)
-                print(f"overlap, adding {km}")
-                print(merged, key(ri))
+                # print(f"overlap, adding {km}")
+                # print(merged, key(ri))
                 if key(ri) in merged:
                     del merged[key(ri)]
-                    print(f"Removed {ki}")
+                    # print(f"Removed {ki}")
                 if key(rj) in merged:
                     del merged[key(rj)]
-                    print(f"Removed {kj}")
+                    # print(f"Removed {kj}")
                 merged[key(rm)] = rm
 
 print(fc)
-from pprint import pprint
-pprint(ranges)
-pprint(merged)
+# from pprint import pprint
+# pprint(ranges)
+# pprint(merged)
 
 print(sum([r.stop - r.start for r in ranges]))
