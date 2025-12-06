@@ -35,11 +35,11 @@ hyperfine --input inputs/01 ./01
 
 ## Ahas
 
-- Day 1 - "Always rotate right, flip the dial if needed" ([Source](https://mastodon.social/@jukkasuomela.fi@bsky.brid.gy/115650037243506402))
+- **Day 1** - "Always rotate right, flip the dial if needed" ([Mastodon](https://mastodon.social/@jukkasuomela.fi@bsky.brid.gy/115650037243506402))
 
-- Day 2 - "You only have to construct the values that are made out of repeated digit strings and then see if the result is the range, not check every number in the range to see if it's made of repeated digit strings" ([Source](https://www.reddit.com/r/adventofcode/comments/1pc0le8/2025_day_2_part_2_time_to_reach_for_that_trusty/nrup8b2/))
+- **Day 2** - "You only have to construct the values that are made out of repeated digit strings and then see if the result is the range, not check every number in the range to see if it's made of repeated digit strings" ([Reddit](https://www.reddit.com/r/adventofcode/comments/1pc0le8/2025_day_2_part_2_time_to_reach_for_that_trusty/nrup8b2/))
 
-- Day 3 - Find the biggest digit in `range(prevBiggest, len - remaining)` ([Source](https://x.com/bingbackbook/status/1997010921676591518))
+- **Day 3** - Find the biggest digit in `range(prevBiggest + 1, len - remaining +1)` ([Twitter](https://x.com/bingbackbook/status/1997010921676591518))
 
 ## Oblique strategies
 
@@ -47,4 +47,4 @@ hyperfine --input inputs/01 ./01
 | --- | --------------------------- |
 | 1   | _Mirror, transform, mirror_ |
 | 2   | _Solve the inverse_         |
-| 2   | _Begin again_               |
+| 3   | _Begin again_               |
