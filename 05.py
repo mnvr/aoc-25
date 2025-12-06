@@ -30,7 +30,8 @@ def key(r):
     return (r.start, r.stop)
 
 merged = None
-for _ in range(0, 300):
+p2 = 0
+for _ in range(0, 150):
     if merged is None:
         merged = {}
     else:
@@ -56,10 +57,7 @@ for _ in range(0, 300):
                     del merged[key(rj)]
                     # print(f"Removed {kj}")
                 merged[key(rm)] = rm
+    prev_p2 = p2
+    p2 = sum([r.stop - r.start for r in ranges])
 
-print(fc)
-# from pprint import pprint
-# pprint(ranges)
-# pprint(merged)
-
-print(sum([r.stop - r.start for r in ranges]))
+print(fc, p2)
