@@ -30,7 +30,7 @@ hyperfine --input inputs/01 ./01
 | 1   |  19 ms | 4 ms |
 | 2   |  75 ms |    - |
 | 3   |  15 ms |    - |
-| 3   |  95 ms |    - |
+| 3   |  82 ms |    - |
 | 3   | 999 ms |    - |
 
 ## Ahas
