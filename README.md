@@ -30,8 +30,8 @@ hyperfine --input inputs/01 ./01
 | 1   |  19 ms | 4 ms |
 | 2   |  75 ms |    - |
 | 3   |  15 ms |    - |
-| 3   |  82 ms |    - |
-| 3   | 999 ms |    - |
+| 4   |  82 ms |    - |
+| 5   |  18 ms |    - |
 
 ## Ahas
 
@@ -48,3 +48,4 @@ hyperfine --input inputs/01 ./01
 | 1   | _Mirror, transform, mirror_ |
 | 2   | _Solve the inverse_         |
 | 3   | _Begin again_               |
+| 4   | _Visualize the problem_     |
