@@ -10,9 +10,8 @@ for line in sys.stdin:
         while remaining > 0:
             end = len(line) - remaining + 1
             best = max(line[pos:end])
-            i = line.index(best, pos, end)
+            pos = line.index(best, pos, end) + 1
             batteries.append(best)
-            pos = i + 1
             remaining -= 1
         return int(''.join(batteries))
 
