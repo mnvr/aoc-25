@@ -9,10 +9,8 @@ for line in sys.stdin:
         else:
             ids.append(int(line))
 
-def sorted_ranges(r):
-    return list(map(lambda t: range(t[0], t[1]), sorted(map(lambda r: (r.start, r.stop), ranges))))
+ranges.sort(key=lambda r: (r.start, r.stop))
 
-ranges = sorted_ranges(ranges)
 i = 0
 while i < len(ranges):
     r1 = ranges[i]
