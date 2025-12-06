@@ -8,11 +8,10 @@ def valid(mx, y, x):
     c = 0
     for j in range(max(0, y-1), min(y+2, len(mx))):
         for i in range(max(0, x-1), min(x+2, len(mx[0]))):
-            if not (y == j and x == i):
-                c += mx[j][i]
-                if c >= 4:
-                    return False
-    return c < 4
+            c += mx[j][i]
+            if c > 4:
+                return False
+    return c <= 4
 
 def prune(mx):
     changed = []
