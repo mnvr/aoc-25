@@ -1,18 +1,15 @@
 import sys
 from math import prod
 
+lines = list(filter(bool, sys.stdin.read().split('\n')))
+
 op = None
-r = 0
+r2 = 0
 nums = []
-for row in zip(*sys.stdin.read().strip().split('\n')):
+for row in zip(*lines):
     row = ''.join(row).strip()
     if not row:
-        if op == '+':
-            r += sum(nums)
-        elif op == '*':
-            r += prod(nums)
-        else:
-            raise "wtf"
+        r2 += sum(nums) if op == '+' else prod(nums)
         op = None
         nums = []
     else:
@@ -21,7 +18,8 @@ for row in zip(*sys.stdin.read().strip().split('\n')):
             row = row[:-1]
         nums.append(int(row))
 
-print(r)
+r2 += sum(nums) if op == '+' else prod(nums)
+print(r2)
 # print(list(zip(*sys.stdin.read().split('\n'))))
 exit()
 lines = []
