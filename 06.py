@@ -4,23 +4,20 @@ from math import prod
 lines = list(filter(bool, sys.stdin.read().split('\n')))
 
 r1 = 0
-for group in zip(*[row.split() for row in lines]):
-    nums = map(int, group[:-1])
-    r1 += sum(nums) if group[-1] == '+' else prod(nums)
+for (*nums, op) in zip(*(map(str.split, lines))):
+    nums = map(int, nums)
+    r1 += sum(nums) if op == '+' else prod(nums)
 
-op = None
 r2 = 0
-nums = []
+op, nums = None, []
 for row in zip(*lines):
     row = ''.join(row).strip()
     if not row:
         r2 += sum(nums) if op == '+' else prod(nums)
-        op = None
-        nums = []
+        op, nums = None, []
     else:
         if op is None:
-            op = row[-1]
-            row = row[:-1]
+            row, op = row[:-1], row[-1]
         nums.append(int(row))
 
 r2 += sum(nums) if op == '+' else prod(nums)
