@@ -44,6 +44,8 @@ hyperfine --input inputs/01 ./01
 
 - **Day 4**: Save paper coordinates as set, intersect with neighbour coordinates to reduce — _[@4HbQ](https://old.reddit.com/r/adventofcode/comments/1pdr8x6/2025_day_4_solutions/ns7eynv/)_, _[@znipper](https://old.reddit.com/r/adventofcode/comments/1pdr8x6/2025_day_4_solutions/ns8ggww/)_
 
+- **Day 6**: After transposing, either the separators or the trailing op can be used to delimit numbers. — [Reddit megathread](https://old.reddit.com/r/adventofcode/comments/1pfguxk/2025_day_6_solutions)
+
 ## Oblique strategies
 
 | Day | Oblique strategy            |
@@ -52,3 +54,5 @@ hyperfine --input inputs/01 ./01
 | 2   | _Solve the inverse_         |
 | 3   | _Begin again_               |
 | 4   | _Convolve_                  |
+| 5   | -                           |
+| 6   | _Transpose!_                |

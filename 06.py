@@ -1,6 +1,29 @@
 import sys
 from math import prod
 
+op = None
+r = 0
+nums = []
+for row in zip(*sys.stdin.read().strip().split('\n')):
+    row = ''.join(row).strip()
+    if not row:
+        if op == '+':
+            r += sum(nums)
+        elif op == '*':
+            r += prod(nums)
+        else:
+            raise "wtf"
+        op = None
+        nums = []
+    else:
+        if op is None:
+            op = row[-1]
+            row = row[:-1]
+        nums.append(int(row))
+
+print(r)
+# print(list(zip(*sys.stdin.read().split('\n'))))
+exit()
 lines = []
 cols = None
 for line in sys.stdin:
