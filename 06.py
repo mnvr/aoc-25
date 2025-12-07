@@ -1,7 +1,7 @@
 import sys
 from math import prod
 
-lines = list(filter(bool, sys.stdin.read().split('\n')))
+lines = list(filter(bool, sys.stdin.read().splitlines()))
 
 r1 = 0
 for (*nums, op) in zip(*(map(str.split, lines))):
