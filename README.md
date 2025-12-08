@@ -33,6 +33,7 @@ hyperfine --input inputs/01 ./01
 | 4   |  82 ms |    - |
 | 5   |  18 ms |    - |
 | 6   |  17 ms |    - |
+| 7   |  18 ms |    - |
 
 ## Ahas
 
@@ -45,6 +46,8 @@ hyperfine --input inputs/01 ./01
 - **Day 4**: Save paper coordinates as set, intersect with neighbour coordinates to reduce — _[@4HbQ](https://old.reddit.com/r/adventofcode/comments/1pdr8x6/2025_day_4_solutions/ns7eynv/)_, _[@znipper](https://old.reddit.com/r/adventofcode/comments/1pdr8x6/2025_day_4_solutions/ns8ggww/)_
 
 - **Day 6**: After transposing, either the separators or the trailing op can be used to delimit numbers. — [Reddit megathread](https://old.reddit.com/r/adventofcode/comments/1pfguxk/2025_day_6_solutions)
+
+- **Day 7**: `from collections import Counter` — [@AllanTaylor314](https://www.reddit.com/r/adventofcode/comments/1pdqgj7/2025_day_03_both_partspython_im_new_to_python_and/ns72pt0/)
 
 ## Oblique strategies
 
