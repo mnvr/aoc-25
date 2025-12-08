@@ -25,16 +25,16 @@ hyperfine --input inputs/01 'python 01.py'
 hyperfine --input inputs/01 ./01
 ```
 
-| Day | Python | Rust |
-| --- | -----: | ---: |
-| 1   |  19 ms | 4 ms |
-| 2   |  75 ms |    - |
-| 3   |  15 ms |    - |
-| 4   |  82 ms |    - |
-| 5   |  18 ms |    - |
-| 6   |  17 ms |    - |
-| 7   |  18 ms |    - |
-| 8   | 570 ms |    - |
+| Day |      Python | Rust |
+| --- | ----------: | ---: |
+| 1   |       19 ms | 4 ms |
+| 2   |       75 ms |    - |
+| 3   |       15 ms |    - |
+| 4   |       82 ms |    - |
+| 5   |       18 ms |    - |
+| 6   |       17 ms |    - |
+| 7   |       18 ms |    - |
+| 8   | **3500 ms** |    - |
 
 ## Ahas
 
