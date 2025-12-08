@@ -1,26 +1,19 @@
 import sys
-from math import prod, sqrt
-from heapq import heappush, heappop
+from math import prod, dist
+from itertools import combinations
 
 boxes = [tuple(map(int, line.split(','))) for line in sys.stdin]
 P1 = 10 if len(boxes) < 50 else 1000
 
-dist = []
-circuits = {}
-for (i, x) in enumerate(boxes):
-    circuits[x] = set([x])
-    for (j, y) in enumerate(boxes):
-        if j > i:
-            d = sqrt(sum(map(lambda uv: (uv[0] - uv[1])**2, zip(x, y))))
-            heappush(dist, (d, (x, y)))
+ds = list(sorted(combinations(boxes, 2), key=lambda p: dist(*p)))
+circuits = {b: set([b]) for b in boxes}
 
 p1 = 0
 V = len(boxes) - 1
 i = 0
 while i < V:
+    p, q = ds[i]
     i += 1
-    _, pair = heappop(dist)
-    (p, q) = pair
     p2 = p[0]*q[0]
     s1 = circuits[p]
     s2 = circuits[q]
