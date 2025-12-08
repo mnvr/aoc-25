@@ -2,39 +2,28 @@
 
 [Advent of Code 2025](https://adventofcode.com/2025/) in Python.
 
-## Python
-
 Install [Python 3](https://python.org), then:
 
 ```sh
 cat examples/01 | python 01.py
 ```
 
-## Rust
-
-Install [Rust](https://rust-lang.org/), then:
-
-```sh
-rustc 01.rs && cat examples/01 | ./01
-```
-
 ## Benchmarks
 
 ```sh
 hyperfine --input inputs/01 'python 01.py'
-hyperfine --input inputs/01 ./01
 ```
 
-| Day |      Python | Rust |
-| --- | ----------: | ---: |
-| 1   |       19 ms | 4 ms |
-| 2   |       75 ms |    - |
-| 3   |       15 ms |    - |
-| 4   |       82 ms |    - |
-| 5   |       18 ms |    - |
-| 6   |       17 ms |    - |
-| 7   |       18 ms |    - |
-| 8   | **3500 ms** |    - |
+| Day |      Python |
+| --- | ----------: |
+| 1   |       19 ms |
+| 2   |       75 ms |
+| 3   |       15 ms |
+| 4   |       82 ms |
+| 5   |       18 ms |
+| 6   |       17 ms |
+| 7   |       18 ms |
+| 8   | **3500 ms** |
 
 ## Ahas
 
