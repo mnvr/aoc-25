@@ -2,10 +2,18 @@
 
 [Advent of Code 2025](https://adventofcode.com/2025/) in Python.
 
+## Running
+
 Install [Python 3](https://python.org), then:
 
 ```sh
 cat examples/01 | python 01.py
+```
+
+## Test
+
+```sh
+sh test.sh
 ```
 
 ## Benchmarks
@@ -37,7 +45,7 @@ hyperfine --input inputs/01 'python 01.py'
 
 - **Day 6**: After transposing, either the separators or the trailing op can be used to delimit numbers. — [Reddit megathread](https://old.reddit.com/r/adventofcode/comments/1pfguxk/2025_day_6_solutions)
 
-- **Day 7**: `from collections import Counter` — [@AllanTaylor314](https://www.reddit.com/r/adventofcode/comments/1pdqgj7/2025_day_03_both_partspython_im_new_to_python_and/ns72pt0/)
+- **Day 7**: `from collections import Counter` — _[@AllanTaylor314](https://www.reddit.com/r/adventofcode/comments/1pdqgj7/2025_day_03_both_partspython_im_new_to_python_and/ns72pt0/)_
 
 ## Oblique strategies
 
