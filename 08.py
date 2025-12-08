@@ -1,36 +1,23 @@
 import sys
-from math import prod, dist
+import math
 from itertools import combinations
 
 boxes = [tuple(map(int, line.split(','))) for line in sys.stdin]
 P1 = 10 if len(boxes) < 50 else 1000
 
-ds = list(sorted(combinations(boxes, 2), key=lambda p: dist(*p)))
-circuits = {b: set([b]) for b in boxes}
+groups = {frozenset([b]) for b in boxes}
+ds = sorted(combinations(boxes, 2), key=lambda p: math.dist(*p))
 
 p1 = 0
-V = len(boxes) - 1
-i = 0
-while i < V:
-    p, q = ds[i]
-    i += 1
+for i, (p,q) in enumerate(ds):
     p2 = p[0]*q[0]
-    s1 = circuits[p]
-    s2 = circuits[q]
+    g1, g2 = [next(g for g in groups if x in g) for x in (p, q)]
+    groups = (groups - {g1, g2}) | {frozenset() | g1 | g2}
 
-    # MST has V-1 edges, increment if we're adding redundant ones.
-    if p in s2 or q in s1:
-        V += 1
+    if i+1 == P1:
+        p1 = math.prod(sorted(map(len, groups), reverse=True)[:3])
 
-    s3 = s1.union(s2)
-    for n in s3:
-        circuits[n] = s3
-
-    if i == P1:
-        uniq = []
-        for c in circuits.values():
-            if c not in uniq:
-                uniq.append(c)
-        p1 = prod(sorted(map(len, uniq), reverse=True)[:3])
+    if len(groups) == 1:
+        break
 
 print(p1, p2)

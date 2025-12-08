@@ -31,7 +31,7 @@ hyperfine --input inputs/01 'python 01.py'
 | 5   |  18 ms |
 | 6   |  17 ms |
 | 7   |  18 ms |
-| 8   | 470 ms |
+| 8   | 330 ms |
 
 ## Ahas
 
@@ -46,6 +46,8 @@ hyperfine --input inputs/01 'python 01.py'
 - **Day 6**: After transposing, either the separators or the trailing op can be used to delimit numbers. — [Reddit megathread](https://old.reddit.com/r/adventofcode/comments/1pfguxk/2025_day_6_solutions)
 
 - **Day 7**: `from collections import Counter` — _[@AllanTaylor314](https://www.reddit.com/r/adventofcode/comments/1pdqgj7/2025_day_03_both_partspython_im_new_to_python_and/ns72pt0/)_
+
+- **Day 8**: `sorted(combinations(boxes, 2), key=lambda p: math.dist(*p))`, frozensets for equality` and other great tips by _[@AlexTelon](https://www.reddit.com/r/adventofcode/comments/1ph3tfc/2025_day_8_solutions/nswkcy1/)_
 
 ## Oblique strategies
 
