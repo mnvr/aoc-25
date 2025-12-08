@@ -2,15 +2,16 @@ import sys
 from math import prod, sqrt
 
 boxes = [tuple(map(int, line.split(','))) for line in sys.stdin]
+
 dist = {}
 for (i, x) in enumerate(boxes):
     for (j, y) in enumerate(boxes):
         if j > i:
-            d = sqrt(sum(map(lambda t: (t[0] - t[1])**2, zip(x, y))))
+            d = sqrt(sum(map(lambda uv: (uv[0] - uv[1])**2, zip(x, y))))
             dist[(x, y)] = d
 
 circuits = []
-for _ in range(0, 10):
+for _ in range(0, 1000):
     min_dist = int(1e9)
     min_dist_pair = None
     for key, value in dist.items():
