@@ -12,7 +12,8 @@ p1 = 0
 for i, (p,q) in enumerate(ds):
     p2 = p[0]*q[0]
     g1, g2 = [next(g for g in groups if x in g) for x in (p, q)]
-    groups = (groups - {g1, g2}) | {frozenset() | g1 | g2}
+    groups -= {g1, g2}
+    groups.add(g1 | g2)
 
     if i+1 == P1:
         p1 = math.prod(sorted(map(len, groups), reverse=True)[:3])
