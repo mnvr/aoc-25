@@ -33,8 +33,8 @@ def is_point_inside_or_boundary(x, y):
     if is_point_on_boundary(x, y):
         return True
 
-    for u in range(0, x):
-        if is_point_on_boundary(u, y):
+    for u in range(x, 0, -1):
+        if is_point_on_boundary(u-1, y):
             break
     else:
         return False
@@ -45,8 +45,8 @@ def is_point_inside_or_boundary(x, y):
     else:
         return False
 
-    for v in range(0, y):
-        if is_point_on_boundary(x, v):
+    for v in range(y, 0, -1):
+        if is_point_on_boundary(x, v-1):
             break
     else:
         return False
@@ -76,11 +76,27 @@ def vis():
 if len(ds) < 100:
     vis()
 
+def check_border(x, y, u, v):
+    x1, y1 = min(x, u), min(y, v)
+    x2, y2 = max(x, u), max(y, v)
+    for a in range(x1, x2 + 1):
+        if not is_point_inside_or_boundary(a, y1):
+            return False
+        if not is_point_inside_or_boundary(a, y2):
+            return False
+    for b in range(y1, y2 + 1):
+        if not is_point_inside_or_boundary(x1, b):
+            return False
+        if not is_point_inside_or_boundary(x2, b):
+            return False
+    return True
+
 p1 = ds[0][0]
 p2 = None
 for (d, ((x, y), (u, v))) in ds:
     if is_point_inside_or_boundary(x, v) and is_point_inside_or_boundary(u, y):
-        p2 = d
-        break
+        if check_border(x, y, u, v):
+            p2 = d
+            break
 
 print(p1, p2)
