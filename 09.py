@@ -79,6 +79,7 @@ def neighbours(x, y):
 def floodfill_out():
     v = set()
     q = [(0, 0)]
+    print(max_x, max_y, max_x * max_y)
     while len(q):
         (x, y) = q.pop()
         # vis(v)
@@ -88,53 +89,62 @@ def floodfill_out():
                 q.append(n)
     return v
 
-outside = floodfill_out()
-# print(outside)
-# vis(outside)
+def floodfill_in():
+    v = set()
+    # q = [ds[0][1][1]]
+    (z1, z2) = ds[0][1][1]
+    q = [(z1+1, z2+1)]
+    print(max_x, max_y, max_x * max_y)
+    while len(q):
+        (x, y) = q.pop()
+        # vis(v)
+        for n in neighbours(x, y):
+            if n not in v and not is_wall(n[0], n[1]):
+                v.add(n)
+                q.append(n)
+    return v
 
-for (dist, (a, b)) in ds:
-    (x, y) = a
-    (u, v) = b
-    if (x, v) in outside or (u, y) in outside:
-        # print(f"skipping {(a, b)}")
-        continue
-    print(dist)
-    break
-
-exit()
-
-def is_point_inside(x, y):
-    res = _is_point_inside(x, y)
-    print1(f"is_point_inside({x}, {y}): {res}")
+def is_point_inside_or_boundary(x, y):
+    res = _is_point_inside_or_boundary(x, y)
+    print1(f"is_point_inside_or_boundary({x}, {y}): {res}")
     return res
 
-def _is_point_inside(x, y):
-    # # On boundary
-    # for a, b in horizontal_lines[y]:
-    #     if a <= x and x <= b:
-    #         return True
-    # for a, b in vertical_lines[x]:
-    #     if a <= y and y <= b:
-    #         return True
+def _is_point_inside_or_boundary(x, y):
+    if is_point_on_boundary(x, y):
+        return True
 
-    # Inside interior
-    inside = False
-    xr = range(0, x) #if x < (max_x - x) else range(x, max_x)
-    for u in xr:
-        if any(a < y and y < b for a, b in vertical_lines[u]):
-            # print(f"testing point ({x}, {y}) u {u} found vertical crossing and will flip inside to {not inside}")
-            inside = not inside
-    if not inside:
+    for u in range(0, x):
+        # print("1", u, y, is_point_on_boundary(u, y))
+        if is_point_on_boundary(u, y):
+            break
+    else:
         return False
-    return True
-    yr = range(0, y) #if y < (max_y - y) else range(y, max_y)
-    for v in yr:
-        if is_point_on_boundary(x, v):
-            continue
-        if any(a < x and x < b for a, b in horizontal_lines[v]):
-            inside = not inside
-    return inside
 
+    for x in range(x+1, max_x+1):
+        # print("2", u, y, is_point_on_boundary(u, y))
+        if is_point_on_boundary(u, y):
+            break
+    else:
+        return False
+
+    for v in range(0, y):
+        # print("3", x, v, is_point_on_boundary(x, v))
+        if is_point_on_boundary(x, v):
+            break
+    else:
+        return False
+
+    for v in range(y+1, max_y+1):
+        # print("3", x, v, is_point_on_boundary(x, v))
+        if is_point_on_boundary(x, v):
+            break
+    else:
+        return False
+
+    return True
+
+# print(is_point_inside_or_boundary(10, 4))
+# exit()
 print("012345678901234")
 for y in range(0, max_y + 3):
     if y < 10:
@@ -144,7 +154,7 @@ for y in range(0, max_y + 3):
     for x in range(0, max_x + 3):
         if is_point_on_boundary(x, y):
             print('#', end='')
-        elif is_point_inside(x, y):
+        elif is_point_inside_or_boundary(x, y):
             print('\033[37m#\033[0m', end='')
         else:
             print('.', end='')
