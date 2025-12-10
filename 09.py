@@ -39,7 +39,7 @@ def is_point_inside_or_boundary(x, y):
     else:
         return False
 
-    for x in range(x+1, max_x+1):
+    for u in range(x+1, max_x+1):
         if is_point_on_boundary(u, y):
             break
     else:
