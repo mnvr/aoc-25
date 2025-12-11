@@ -8,34 +8,19 @@ def parse(line):
     joltage = tuple(int(c) for c in joltage[1:-1].split(','))
     return (lights, buttons, joltage)
 
-def make_neighbours(buttons, action):
+def shortest_path(dest, buttons, is_p2):
     def neighbours(v):
         ns = set()
         for button in buttons:
             n = list(v)
             for i in button:
-                n[i] = action(n[i])
+                if is_p2:
+                    n[i] = (n[i] + 1)
+                else:
+                    n[i] = (n[i] + 1) % 2
             ns.add(tuple(n))
         return ns
-    return neighbours
 
-def steps(dest, buttons, action):
-    neighbours = make_neighbours(buttons, action)
-    start = tuple([0] * len(dest))
-    visited = set()
-    queue = collections.deque([(start, 0)])
-
-    while len(queue):
-        u, d = queue.popleft()
-        if u == dest:
-            return d
-        visited.add(u)
-        for v in neighbours(u):
-            if v not in visited:
-                queue.append((v, d+1))
-
-def shortest_path(dest, buttons, action):
-    neighbours = make_neighbours(buttons, action)
     start = tuple([0] * len(dest))
     inf = 10000
 
@@ -68,13 +53,12 @@ def shortest_path(dest, buttons, action):
         return u
 
     while len(queue):
-        u = min_q_star()
+        u = min_q_star() if is_p2 else min_q()
         visited.add(u)
-        print(u)
         if u == dest:
             return dist[u]
         for v in neighbours(u):
-            if any(a > b for a, b in zip(v, dest)):
+            if is_p2 and any(a > b for a, b in zip(v, dest)):
                 continue
             if v not in visited:
                 queue.add(v)
@@ -82,11 +66,11 @@ def shortest_path(dest, buttons, action):
             if dist[v] > alt:
                 dist[v] = alt
 
-def process(lights, buttons, joltage):
-    # s1 = steps(lights, buttons, lambda v: (v + 1) % 2)
-    # s1 = shortest_path(lights, buttons, lambda v: (v + 1) % 2)
-    s2 = shortest_path(joltage, buttons, lambda v: v + 1)
-    return s2
+def process(machine):
+    lights, buttons, joltage = machine
+    s1 = shortest_path(lights, buttons, False)
+    s2 = shortest_path(joltage, buttons, True)
+    print(s1, s2)
+    return (s1, s2)
 
-p1 = list(process(*parse(line)) for line in sys.stdin)
-print(sum(p1))
+print(*map(sum, zip(*map(process, map(parse, sys.stdin)))))
