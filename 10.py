@@ -8,16 +8,13 @@ def parse(line):
     joltage = tuple(int(c) for c in joltage[1:-1].split(','))
     return (lights, buttons, joltage)
 
-def shortest_path(dest, buttons, is_p2):
+def shortest_path(dest, buttons):
     def neighbours(v):
         ns = set()
         for button in buttons:
             n = list(v)
             for i in button:
-                if is_p2:
-                    n[i] = (n[i] + 1)
-                else:
-                    n[i] = (n[i] + 1) % 2
+                n[i] = (n[i] + 1) % 2
             ns.add(tuple(n))
         return ns
 
@@ -39,26 +36,60 @@ def shortest_path(dest, buttons, is_p2):
         queue.remove(u)
         return u
 
+    while len(queue):
+        u = min_q()
+        visited.add(u)
+        if u == dest:
+            return dist[u]
+        for v in neighbours(u):
+            if v in visited:
+                continue
+            queue.add(v)
+            alt = dist[u] + 1
+            if dist[v] > alt:
+                dist[v] = alt
+
+def shortest_path_astar(dest, buttons):
+    def neighbours(v):
+        ns = set()
+        for button in buttons:
+            n = list(v)
+            for i in button:
+                n[i] = (n[i] + 1)
+            ns.add(tuple(n))
+        return ns
+
+    start = tuple([0] * len(dest))
+    inf = 10000
+
+    queue = set()
+    visited = set()
+    dist = collections.defaultdict(lambda: inf)
+    queue.add(start)
+    dist[start] = 0
+
     # vertex in Q with minimum dist[u] and some heuristic
     def min_q_star():
         d, h, u = inf, 0, None
         def heuristic(v):
             return len(v)
         for v in queue:
-            if d > dist[v]:
-                (d, h, u) = (dist[v], heuristic(v), v)
-            elif d == dist[v] and heuristic(v) > h:
-                (d, h, u) = (dist[v], heuristic(v), v)
+            dv = dist[v]
+            if d > dv:
+                (d, h, u) = (dv, heuristic(v), v)
+            elif d == dv and heuristic(v) > h:
+                (d, h, u) = (dv, heuristic(v), v)
         queue.remove(u)
         return u
 
     while len(queue):
-        u = min_q_star() if is_p2 else min_q()
+        u = min_q_star()
+        # print(len(queue), u, dest)
         visited.add(u)
         if u == dest:
             return dist[u]
         for v in neighbours(u):
-            if is_p2 and any(a > b for a, b in zip(v, dest)):
+            if any(a > b for a, b in zip(v, dest)):
                 continue
             if v not in visited:
                 queue.add(v)
@@ -68,8 +99,8 @@ def shortest_path(dest, buttons, is_p2):
 
 def process(machine):
     lights, buttons, joltage = machine
-    s1 = shortest_path(lights, buttons, False)
-    s2 = shortest_path(joltage, buttons, True)
+    s1 = shortest_path(lights, buttons)
+    s2 = shortest_path_astar(joltage, buttons)
     print(s1, s2)
     return (s1, s2)
 
