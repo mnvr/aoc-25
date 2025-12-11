@@ -1,5 +1,4 @@
 import sys
-import collections
 
 def parse(line):
     [lights, *buttons, joltage] = line.split()
@@ -21,92 +20,43 @@ def shortest_path(dest, buttons):
     start = tuple([0] * len(dest))
     inf = 10000
 
-    queue = set()
-    visited = set()
-    dist = collections.defaultdict(lambda: inf)
-    queue.add(start)
+    dist = {}
+    frontier = set()
+
     dist[start] = 0
+    frontier.add(start)
 
-    # vertex in Q with minimum dist[u]
-    def min_q():
-        d, u = inf, None
-        for v in queue:
-            if d > dist[v]:
-                (d, u) = (dist[v], v)
-        queue.remove(u)
-        return u
-
-    while len(queue):
-        u = min_q()
-        visited.add(u)
-        if u == dest:
-            return dist[u]
-        for v in neighbours(u):
-            if v in visited:
-                continue
-            queue.add(v)
-            alt = dist[u] + 1
-            if dist[v] > alt:
-                dist[v] = alt
-
-def shortest_path_astar(dest, buttons):
-    def neighbours(v):
-        ns = set()
-        for button in buttons:
-            n = list(v)
-            for i in button:
-                n[i] = (n[i] + 1)
-            ns.add(tuple(n))
-        return ns
-
-    start = tuple([0] * len(dest))
-    inf = 10000
-
-    queue = set()
-    visited = set()
-    dist = collections.defaultdict(lambda: inf)
-    heuristic = collections.defaultdict(lambda: inf)
-    queue.add(start)
-    dist[start] = 0
-    heuristic[start] = 0
-
-    # vertex in Q with minimum dist[u] and some heuristic
-    def min_q_star():
-        d, h, u = inf, 0, None
-        for v in queue:
+    # currently closest node to start
+    def nearest():
+        du, u = inf, None
+        for v in frontier:
             dv = dist[v]
-            hv = heuristic[v]
-            if h > hv:
-                (d, h, u) = (dv, hv, v)
-        if u is None:
-            for v in queue:
-                dv = dist[v]
-                hv = heuristic[v]
-                if d > dv:
-                    (d, h, u) = (dv, hv, v)
-        queue.remove(u)
-        return u
+            if du > dv:
+                (du, u) = (dv, v)
+        return (du, u)
 
-    while len(queue):
-        u = min_q_star()
-        print(len(queue), u, dest)
-        visited.add(u)
+    while len(frontier):
+        du, u = nearest()
+
+        frontier.remove(u)
         if u == dest:
             return dist[u]
+
+        # relax all neighbours
         for v in neighbours(u):
-            if any(a > b for a, b in zip(v, dest)):
-                continue
-            if v not in visited:
-                queue.add(v)
-                heuristic[v] = sum(v)
-            alt = dist[u] + 1
-            if dist[v] > alt:
-                dist[v] = alt
+            dv = dist.get(v)
+            if dv is None or dv > du + 1:
+                dist[v] = du + 1
+                frontier.add(v)
+
+shortest_path_astar = shortest_path
 
 def process(machine):
     lights, buttons, joltage = machine
     s1 = shortest_path(lights, buttons)
-    s2 = shortest_path_astar(joltage, buttons)
+    # s2 = shortest_path_astar(lights, buttons)
+    # s2 = shortest_path_astar(joltage, buttons)
+    s2 = 0
     print(s1, s2)
     return (s1, s2)
 
