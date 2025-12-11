@@ -54,12 +54,28 @@ def shortest_path(dest, buttons, action):
         queue.remove(u)
         return u
 
+    # vertex in Q with minimum dist[u] and some heuristic
+    def min_q_star():
+        d, h, u = inf, 0, None
+        def heuristic(v):
+            return len(v)
+        for v in queue:
+            if d > dist[v]:
+                (d, h, u) = (dist[v], heuristic(v), v)
+            elif d == dist[v] and heuristic(v) > h:
+                (d, h, u) = (dist[v], heuristic(v), v)
+        queue.remove(u)
+        return u
+
     while len(queue):
-        u = min_q()
+        u = min_q_star()
         visited.add(u)
+        print(u)
         if u == dest:
             return dist[u]
         for v in neighbours(u):
+            if any(a > b for a, b in zip(v, dest)):
+                continue
             if v not in visited:
                 queue.add(v)
             alt = dist[u] + 1
@@ -68,9 +84,9 @@ def shortest_path(dest, buttons, action):
 
 def process(lights, buttons, joltage):
     # s1 = steps(lights, buttons, lambda v: (v + 1) % 2)
-    s1 = shortest_path(lights, buttons, lambda v: (v + 1) % 2)
-    # s2 = steps(joltage, buttons, lambda v: v + 1)
-    return s1
+    # s1 = shortest_path(lights, buttons, lambda v: (v + 1) % 2)
+    s2 = shortest_path(joltage, buttons, lambda v: v + 1)
+    return s2
 
 p1 = list(process(*parse(line)) for line in sys.stdin)
 print(sum(p1))
