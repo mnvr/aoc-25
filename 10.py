@@ -65,26 +65,31 @@ def shortest_path_astar(dest, buttons):
     queue = set()
     visited = set()
     dist = collections.defaultdict(lambda: inf)
+    heuristic = collections.defaultdict(lambda: inf)
     queue.add(start)
     dist[start] = 0
+    heuristic[start] = 0
 
     # vertex in Q with minimum dist[u] and some heuristic
     def min_q_star():
         d, h, u = inf, 0, None
-        def heuristic(v):
-            return len(v)
         for v in queue:
             dv = dist[v]
-            if d > dv:
-                (d, h, u) = (dv, heuristic(v), v)
-            elif d == dv and heuristic(v) > h:
-                (d, h, u) = (dv, heuristic(v), v)
+            hv = heuristic[v]
+            if h > hv:
+                (d, h, u) = (dv, hv, v)
+        if u is None:
+            for v in queue:
+                dv = dist[v]
+                hv = heuristic[v]
+                if d > dv:
+                    (d, h, u) = (dv, hv, v)
         queue.remove(u)
         return u
 
     while len(queue):
         u = min_q_star()
-        # print(len(queue), u, dest)
+        print(len(queue), u, dest)
         visited.add(u)
         if u == dest:
             return dist[u]
@@ -93,6 +98,7 @@ def shortest_path_astar(dest, buttons):
                 continue
             if v not in visited:
                 queue.add(v)
+                heuristic[v] = sum(v)
             alt = dist[u] + 1
             if dist[v] > alt:
                 dist[v] = alt
