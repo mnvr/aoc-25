@@ -1,12 +1,15 @@
 import sys
 
-def process(line):
-    [out, *buttons, joltage] = line.split()
-    out = [c == '#' for c in out.strip("[]")]
+def parse(line):
+    [lights, *buttons, joltage] = line.split()
+    lights = [c == '#' for c in lights.strip("[]")]
     buttons = [set(int(c) for c in s.strip("()").split(',')) for s in buttons]
-    print(out)
+    return (lights, buttons)
+
+def process(lights, buttons):
+    print(lights)
     print(buttons)
     return 1
 
-p1 = sum(process(line) for line in sys.stdin)
+p1 = sum(process(*parse(line)) for line in sys.stdin)
 print(p1)
