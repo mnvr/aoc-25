@@ -7,6 +7,8 @@ def parse(line):
     joltage = tuple(int(c) for c in joltage[1:-1].split(','))
     return (lights, buttons, joltage)
 
+inf = 10000
+
 def shortest_path(dest, buttons):
     def neighbours(v):
         ns = set()
@@ -18,7 +20,6 @@ def shortest_path(dest, buttons):
         return ns
 
     start = tuple([0] * len(dest))
-    inf = 10000
 
     dist = {}
     frontier = set()
@@ -49,14 +50,59 @@ def shortest_path(dest, buttons):
                 dist[v] = du + 1
                 frontier.add(v)
 
-shortest_path_astar = shortest_path
+def shortest_path_astar(dest, buttons):
+    dest_list = list(dest)
+
+    def neighbours(v):
+        ns = set()
+        for button in buttons:
+            n = list(v)
+            for i in button:
+                n[i] = n[i] + 1
+            if any(n[i] > dest_list[i] for i in range(len(dest_list))):
+                continue
+            ns.add(tuple(n))
+        return ns
+
+    start = tuple([0] * len(dest))
+
+    dist = {}
+    frontier = set()
+
+    dist[start] = 0
+    frontier.add(start)
+
+    def potential(v):
+        return sum(a - b for a, b in zip(dest, v))
+
+    # currently closest node to start AND end
+    def nearest():
+        du, u = inf, None
+        for v in frontier:
+            dv = dist[v] + potential(v)
+            if du > dv:
+                (du, u) = (dv, v)
+        return (dist[u], u)
+
+    while len(frontier):
+        du, u = nearest()
+        print(dest, u, du, len(frontier))
+
+        frontier.remove(u)
+        if u == dest:
+            return dist[u]
+
+        # relax all neighbours
+        for v in neighbours(u):
+            dv = dist.get(v)
+            if dv is None or dv > du + 1:
+                dist[v] = du + 1
+                frontier.add(v)
 
 def process(machine):
     lights, buttons, joltage = machine
     s1 = shortest_path(lights, buttons)
-    # s2 = shortest_path_astar(lights, buttons)
-    # s2 = shortest_path_astar(joltage, buttons)
-    s2 = 0
+    s2 = shortest_path_astar(joltage, buttons)
     print(s1, s2)
     return (s1, s2)
 
