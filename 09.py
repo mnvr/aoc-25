@@ -37,7 +37,15 @@ for x in vertical_lines:
             s.add(y)
     vy[x] = s
 
+
+boundary_points = set()
+for (x, y), (u, v) in zip(tiles, tiles[1:] + [tiles[0]]):
+    for x in range(min(x, u), max(x, u) + 1):
+        for y in range(min(y, v), max(y, v) + 1):
+            boundary_points.add((x, y))
+
 def is_point_on_boundary(x, y):
+    return (x, y) in boundary_points
     return x in hx[y] or y in vy[x]
 
 def is_point_inside_or_boundary(x, y):
@@ -99,6 +107,8 @@ p1 = ds[0][0]
 p2 = None
 for (d, ((x, y), (u, v))) in ds:
     print(".", end='', flush=True)
+    if not (is_point_on_boundary(x, v) or is_point_on_boundary(u, y)):
+        continue
     if is_point_inside_or_boundary(x, v) and is_point_inside_or_boundary(u, y):
         print(d)
         if check_border(x, y, u, v):
