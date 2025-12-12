@@ -18,3 +18,20 @@ while len(q):
         q.append(v)
 
 print(c)
+
+q = [('svr', 0)]
+c = 0
+while len(q):
+    u, history = q.pop()
+    if u == 'out':
+        if history == 3:
+            c += 1
+        continue
+    if u == 'dac':
+        history |= 2
+    if u == 'fft':
+        history |= 1
+    for v in next[u]:
+        q.append((v, history))
+
+print(c)
