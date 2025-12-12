@@ -1,6 +1,7 @@
 import sys
 from itertools import combinations
 from collections import defaultdict
+from random import randrange
 
 tiles = [list(map(int, line.split(','))) for line in sys.stdin]
 
@@ -20,14 +21,24 @@ for (x, y), (u, v) in zip(tiles, tiles[1:] + [tiles[0]]):
     else:
         horizontal_lines[y].append((min(x, u), max(x, u)))
 
-def is_point_on_boundary(x, y):
+hx = defaultdict(set)
+for y in horizontal_lines:
+    s = set()
     for a, b in horizontal_lines[y]:
-        if a <= x and x <= b:
-            return True
+        for x in range(a, b + 1):
+            s.add(x)
+    hx[y] = s
+
+vy = defaultdict(set)
+for x in vertical_lines:
+    s = set()
     for a, b in vertical_lines[x]:
-        if a <= y and y <= b:
-            return True
-    return False
+        for y in range(a, b + 1):
+            s.add(y)
+    vy[x] = s
+
+def is_point_on_boundary(x, y):
+    return x in hx[y] or y in vy[x]
 
 def is_point_inside_or_boundary(x, y):
     if is_point_on_boundary(x, y):
@@ -79,22 +90,17 @@ if len(ds) < 100:
 def check_border(x, y, u, v):
     x1, y1 = min(x, u), min(y, v)
     x2, y2 = max(x, u), max(y, v)
-    for a in range(x1, x2 + 1):
-        if not is_point_inside_or_boundary(a, y1):
-            return False
-        if not is_point_inside_or_boundary(a, y2):
-            return False
-    for b in range(y1, y2 + 1):
-        if not is_point_inside_or_boundary(x1, b):
-            return False
-        if not is_point_inside_or_boundary(x2, b):
+    for _ in range(0, 500):
+        if not is_point_inside_or_boundary(randrange(x1, x2 + 1), randrange(y1, y2 + 1)):
             return False
     return True
 
 p1 = ds[0][0]
 p2 = None
 for (d, ((x, y), (u, v))) in ds:
+    print(".", end='', flush=True)
     if is_point_inside_or_boundary(x, v) and is_point_inside_or_boundary(u, y):
+        print(d)
         if check_border(x, y, u, v):
             p2 = d
             break
