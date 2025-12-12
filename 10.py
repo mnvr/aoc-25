@@ -38,8 +38,8 @@ def shortest_path(dest, buttons):
 
     while len(frontier):
         du, u = nearest()
-
         frontier.remove(u)
+
         if u == dest:
             return dist[u]
 
@@ -50,8 +50,9 @@ def shortest_path(dest, buttons):
                 dist[v] = du + 1
                 frontier.add(v)
 
+
 def shortest_path_astar(dest, buttons):
-    dest_list = list(dest)
+    dn = list(dest)
 
     def neighbours(v):
         ns = set()
@@ -59,7 +60,7 @@ def shortest_path_astar(dest, buttons):
             n = list(v)
             for i in button:
                 n[i] = n[i] + 1
-            if any(n[i] > dest_list[i] for i in range(len(dest_list))):
+            if any(n[i] > dn[i] for i in range(len(dn))):
                 continue
             ns.add(tuple(n))
         return ns
@@ -73,7 +74,10 @@ def shortest_path_astar(dest, buttons):
     frontier.add(start)
 
     def potential(v):
-        return sum(a - b for a, b in zip(dest, v))
+        z = sum(a - b for a, b in zip(dest, v))
+        if z < 0:
+            raise "Error"
+        return z
 
     # currently closest node to start AND end
     def nearest():
@@ -86,9 +90,8 @@ def shortest_path_astar(dest, buttons):
 
     while len(frontier):
         du, u = nearest()
-        print(dest, u, du, len(frontier))
-
         frontier.remove(u)
+
         if u == dest:
             return dist[u]
 
