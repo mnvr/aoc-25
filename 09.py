@@ -1,7 +1,6 @@
 import sys
 from itertools import combinations
 from collections import defaultdict
-from random import randrange
 
 tiles = [list(map(int, line.split(','))) for line in sys.stdin]
 
@@ -13,9 +12,7 @@ ds = list(sorted(ds, reverse=True))
 
 vertical_lines = defaultdict(list)
 horizontal_lines = defaultdict(list)
-max_x, max_y = 0, 0
 for (x, y), (u, v) in zip(tiles, tiles[1:] + [tiles[0]]):
-    max_x, max_y = max(max_x, x, u), max(max_y, y, v)
     if x == u:
         vertical_lines[x].append((min(y, v), max(y, v)))
     else:
@@ -37,63 +34,8 @@ for x in vertical_lines:
             s.add(y)
     vy[x] = s
 
-
-boundary_points = set()
-for (x, y), (u, v) in zip(tiles, tiles[1:] + [tiles[0]]):
-    for x in range(min(x, u), max(x, u) + 1):
-        for y in range(min(y, v), max(y, v) + 1):
-            boundary_points.add((x, y))
-
 def is_point_on_boundary(x, y):
-    return (x, y) in boundary_points
     return x in hx[y] or y in vy[x]
-
-def is_point_inside_or_boundary(x, y):
-    if is_point_on_boundary(x, y):
-        return True
-
-    for u in range(x, 0, -1):
-        if is_point_on_boundary(u-1, y):
-            break
-    else:
-        return False
-
-    for u in range(x+1, max_x+1):
-        if is_point_on_boundary(u, y):
-            break
-    else:
-        return False
-
-    for v in range(y, 0, -1):
-        if is_point_on_boundary(x, v-1):
-            break
-    else:
-        return False
-
-    for v in range(y+1, max_y+1):
-        if is_point_on_boundary(x, v):
-            break
-    else:
-        return False
-
-    return True
-
-def vis():
-    print("012345678901234")
-    for y in range(0, max_y + 3):
-        print(f"{y % 10}", end='')
-        for x in range(0, max_x + 3):
-            if is_point_on_boundary(x, y):
-                print('#', end='')
-            elif is_point_inside_or_boundary(x, y):
-                print('\033[37m#\033[0m', end='')
-            else:
-                print('.', end='')
-        print()
-    print()
-
-if len(ds) < 100:
-    vis()
 
 def has_intersection(x, y, u, v):
     xr = range(min(x, u) + 1, max(x, u))

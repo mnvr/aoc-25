@@ -22,17 +22,17 @@ sh test.sh
 hyperfine --input inputs/01 'python 01.py'
 ```
 
-| Day |  Python |
-| --- | ------: |
-| 1   |   19 ms |
-| 2   |   75 ms |
-| 3   |   15 ms |
-| 4   |   82 ms |
-| 5   |   18 ms |
-| 6   |   17 ms |
-| 7   |   18 ms |
-| 8   |  276 ms |
-| 9   | 1190 ms |
+| Day | Python |
+| --- | -----: |
+| 1   |  19 ms |
+| 2   |  75 ms |
+| 3   |  15 ms |
+| 4   |  82 ms |
+| 5   |  18 ms |
+| 6   |  17 ms |
+| 7   |  18 ms |
+| 8   | 276 ms |
+| 9   | 960 ms |
 
 ## Ahas
 
