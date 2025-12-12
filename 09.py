@@ -95,23 +95,26 @@ def vis():
 if len(ds) < 100:
     vis()
 
-def check_border(x, y, u, v):
-    x1, y1 = min(x, u), min(y, v)
-    x2, y2 = max(x, u), max(y, v)
-    for _ in range(0, 500):
-        if not is_point_inside_or_boundary(randrange(x1, x2 + 1), randrange(y1, y2 + 1)):
-            return False
+def has_intersection(x, y, u, v):
+    xr = range(min(x, u) + 1, max(x, u))
+    yr = range(min(y, v) + 1, max(y, v))
+    for iy in horizontal_lines:
+        if iy in yr:
+            for (ix1, ix2) in horizontal_lines[iy]:
+                if any(jx in xr for jx in range(ix1 + 1, ix2)):
+                    return False
+    for ix in vertical_lines:
+        if ix in xr:
+            for (iy1, iy2) in vertical_lines[ix]:
+                if any(jy in yr for jy in range(iy1 + 1, iy2)):
+                    return False
     return True
 
 p1 = ds[0][0]
 p2 = None
 for (d, ((x, y), (u, v))) in ds:
-    print(".", end='', flush=True)
-    if not (is_point_on_boundary(x, v) or is_point_on_boundary(u, y)):
-        continue
-    if is_point_inside_or_boundary(x, v) and is_point_inside_or_boundary(u, y):
-        print(d)
-        if check_border(x, y, u, v):
+    if is_point_on_boundary(x, v) or is_point_on_boundary(u, y):
+        if has_intersection(x, y, u, v):
             p2 = d
             break
 
