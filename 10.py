@@ -1,4 +1,5 @@
 import sys
+from heapq import heappush, heappop
 
 def parse(line):
     [lights, *buttons, joltage] = line.split()
@@ -6,8 +7,6 @@ def parse(line):
     buttons = [set(int(c) for c in s[1:-1].split(',')) for s in buttons]
     joltage = tuple(int(c) for c in joltage[1:-1].split(','))
     return (lights, buttons, joltage)
-
-inf = 10000
 
 def shortest_path(dest, buttons):
     def neighbours(v):
@@ -22,33 +21,24 @@ def shortest_path(dest, buttons):
     start = tuple([0] * len(dest))
 
     dist = {}
-    frontier = set()
+    frontier = []
 
     dist[start] = 0
-    frontier.add(start)
-
-    # currently closest node to start
-    def nearest():
-        du, u = inf, None
-        for v in frontier:
-            dv = dist[v]
-            if du > dv:
-                (du, u) = (dv, v)
-        return (du, u)
+    heappush(frontier, (0, start))
 
     while len(frontier):
-        du, u = nearest()
-        frontier.remove(u)
+        du, u = heappop(frontier)
 
         if u == dest:
-            return dist[u]
+            return du
 
         # relax all neighbours
         for v in neighbours(u):
             dv = dist.get(v)
             if dv is None or dv > du + 1:
-                dist[v] = du + 1
-                frontier.add(v)
+                dv = du + 1
+                dist[v] = dv
+                heappush(frontier, (dv, v))
 
 
 def shortest_path_astar(dest, buttons):
@@ -65,42 +55,31 @@ def shortest_path_astar(dest, buttons):
             ns.add(tuple(n))
         return ns
 
+    def potential(v):
+        z = sum(a - b for a, b in zip(dest, v))
+        assert z >= 0
+        return z
+
     start = tuple([0] * len(dest))
 
     dist = {}
-    frontier = set()
+    frontier = []
 
     dist[start] = 0
-    frontier.add(start)
-
-    def potential(v):
-        z = sum(a - b for a, b in zip(dest, v))
-        if z < 0:
-            raise "Error"
-        return z
-
-    # currently closest node to start AND end
-    def nearest():
-        du, u = inf, None
-        for v in frontier:
-            dv = dist[v] + potential(v)
-            if du > dv:
-                (du, u) = (dv, v)
-        return (dist[u], u)
+    heappush(frontier, (0 + potential(start), 0, start))
 
     while len(frontier):
-        du, u = nearest()
-        frontier.remove(u)
-
+        _, du, u = heappop(frontier)
         if u == dest:
-            return dist[u]
+            return du
 
         # relax all neighbours
         for v in neighbours(u):
             dv = dist.get(v)
             if dv is None or dv > du + 1:
-                dist[v] = du + 1
-                frontier.add(v)
+                dv = du + 1
+                dist[v] = dv
+                heappush(frontier, (dv + potential(v), dv, v))
 
 def process(machine):
     lights, buttons, joltage = machine
