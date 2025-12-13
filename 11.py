@@ -2,25 +2,32 @@ import sys
 from collections import defaultdict
 
 next = defaultdict(set)
+prev = defaultdict(set)
 for line in sys.stdin:
     u, vs = line.split(':')
     for v in vs.split():
         next[u].add(v)
+        prev[v].add(u)
 
-
-def path_count(source, dest):
+def path_count(source, dest, adj):
     q = [source]
     c = 0
+    i = 0
     while len(q):
+        if i % 10000 == 1:
+            print('.', end='', flush=True)
+        i += 1
         u = q.pop()
         if u == dest:
             c += 1
             continue
-        for v in next[u]:
+        for v in adj[u]:
             q.append(v)
     return c
 
-print(path_count('svr', 'fft'))
+print(path_count('fft', 'svr', prev))
+# print(path_count('fft', 'dac'))
+print(path_count('dac', 'out', next)) # <-
 exit()
 
 q = ['you']
