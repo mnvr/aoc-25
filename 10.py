@@ -1,5 +1,6 @@
 import sys
 from heapq import heappush, heappop
+from itertools import product
 
 def parse(line):
     [lights, *buttons, joltage] = line.split()
@@ -89,11 +90,59 @@ def bin_pack(dest, buttons):
     print(start, dest, buttons)
     return 0
 
+def apply_button(u, button, count):
+    for i in button:
+        u[i] -= count
+
+def dp(dest, buttons):
+    dest = list(dest)
+    return relax(dest, buttons)
+
+def relax(dest, buttons):
+    if max(dest) == 0:
+        return 0
+
+    if not len(buttons):
+        return None
+
+    m = min(t for t in dest if t > 0)
+    print(f"trying to make {dest} from {buttons} by relaxing {m}")
+
+    mi = dest.index(m)
+    # eligible_buttons = list(filter(lambda button: mi in button, buttons))
+    eligible_buttons, remaining_buttons = [], []
+    for button in buttons:
+        if mi in button:
+            eligible_buttons.append(button)
+        else:
+            remaining_buttons.append(button)
+
+    if not len(eligible_buttons):
+        print(f"no eligible buttons")
+        return None
+
+    variations = list(filter(lambda s: sum(s) == m, product(*([range(m+1)] * len(eligible_buttons)))))
+    print(f"variations {variations}")
+    best = None
+    for variation in variations:
+        new_dest = dest[:]
+        for i, c in enumerate(variation):
+            apply_button(new_dest, eligible_buttons[i], c)
+        rest = relax(new_dest, remaining_buttons)
+        if rest is not None:
+            if best is None:
+                best = rest + m
+            else:
+                best = min(best, rest + m)
+
+    return best
+
 def process(machine):
     lights, buttons, joltage = machine
     s1 = 0
     # s1 = shortest_path(lights, buttons)
-    s2 = bin_pack(joltage, buttons)
+    # s2 = bin_pack(joltage, buttons)
+    s2 = dp(joltage, buttons)
     print(s1, s2)
     return (s1, s2)
 
