@@ -1,18 +1,18 @@
 import sys
-from itertools import combinations
+from itertools import combinations, pairwise
 from collections import defaultdict
 
-tiles = [list(map(int, line.split(','))) for line in sys.stdin]
+red = [list(map(int, line.split(','))) for line in sys.stdin]
 
 def dist(a, b):
     return (abs(a[0]-b[0])+1) * (abs(a[1]-b[1])+1)
 
-ds = ((dist(a, b), (a, b)) for (a, b) in combinations(tiles, 2))
+ds = ((dist(a, b), (a, b)) for (a, b) in combinations(red, 2))
 ds = list(sorted(ds, reverse=True))
 
 vertical_lines = defaultdict(list)
 horizontal_lines = defaultdict(list)
-for (x, y), (u, v) in zip(tiles, tiles[1:] + [tiles[0]]):
+for (x, y), (u, v) in pairwise(red + [red[0]]):
     if x == u:
         vertical_lines[x].append((min(y, v), max(y, v)))
     else:
