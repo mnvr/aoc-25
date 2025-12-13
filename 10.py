@@ -106,7 +106,7 @@ def relax(dest, buttons):
         return None
 
     m = min(t for t in dest if t > 0)
-    print(f"trying to make {dest} from {buttons} by relaxing {m}")
+    # print(f"trying to make {dest} from {buttons} by relaxing {m}")
 
     mi = dest.index(m)
     # eligible_buttons = list(filter(lambda button: mi in button, buttons))
@@ -118,11 +118,11 @@ def relax(dest, buttons):
             remaining_buttons.append(button)
 
     if not len(eligible_buttons):
-        print(f"no eligible buttons")
+        # print(f"no eligible buttons")
         return None
 
     variations = list(filter(lambda s: sum(s) == m, product(*([range(m+1)] * len(eligible_buttons)))))
-    print(f"variations {variations}")
+    # print(f"variations {variations}")
     best = None
     for variation in variations:
         new_dest = dest[:]
@@ -139,11 +139,9 @@ def relax(dest, buttons):
 
 def process(machine):
     lights, buttons, joltage = machine
-    s1 = 0
-    # s1 = shortest_path(lights, buttons)
-    # s2 = bin_pack(joltage, buttons)
+    s1 = shortest_path(lights, buttons)
     s2 = dp(joltage, buttons)
-    print(s1, s2)
+    print(s1, s2, machine)
     return (s1, s2)
 
 print(*map(sum, zip(*map(process, map(parse, sys.stdin)))))
