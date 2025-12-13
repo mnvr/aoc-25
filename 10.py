@@ -40,7 +40,6 @@ def shortest_path(dest, buttons):
                 dist[v] = dv
                 heappush(frontier, (dv, v))
 
-
 def shortest_path_astar(dest, buttons):
     dn = list(dest)
 
@@ -81,10 +80,20 @@ def shortest_path_astar(dest, buttons):
                 dist[v] = dv
                 heappush(frontier, (dv + potential(v), dv, v))
 
+def bin_pack(dest, buttons):
+    dest = list(dest)
+    start = [0] * len(dest)
+    buttons = [list(1 if i in button else 0 for i in range(len(dest))) for button in buttons]
+    buttons = sorted(buttons, key=len, reverse=True)
+    start, dest = dest, start
+    print(start, dest, buttons)
+    return 0
+
 def process(machine):
     lights, buttons, joltage = machine
-    s1 = shortest_path(lights, buttons)
-    s2 = shortest_path_astar(joltage, buttons)
+    s1 = 0
+    # s1 = shortest_path(lights, buttons)
+    s2 = bin_pack(joltage, buttons)
     print(s1, s2)
     return (s1, s2)
 
