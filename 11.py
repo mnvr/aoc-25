@@ -1,5 +1,5 @@
 import sys
-from collections import defaultdict
+from collections import defaultdict, deque
 
 next = defaultdict(set)
 prev = defaultdict(set)
@@ -25,9 +25,26 @@ def path_count(source, dest, adj):
             q.append(v)
     return c
 
-print(path_count('fft', 'svr', prev))
-# print(path_count('fft', 'dac'))
-print(path_count('dac', 'out', next)) # <-
+def path_count_bfs(source, dest, adj):
+    q = deque([source])
+    c = 0
+    i = 0
+    while len(q):
+        if i % 10000 == 1:
+            print('.', end='', flush=True)
+        i += 1
+        u = q.popleft()
+        if u == dest:
+            c += 1
+            continue
+        for v in adj[u]:
+            q.append(v)
+    return c
+
+print(path_count_bfs('fft', 'svr', prev))
+# print(path_count_bfs('dac', 'fft', prev))
+# print(path_count_bfs('fft', 'dac', next))
+print(path_count_bfs('dac', 'out', next)) # <-
 exit()
 
 q = ['you']
