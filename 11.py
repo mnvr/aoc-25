@@ -53,6 +53,16 @@ def topological_sort(start, adj):
     build_topo(start)
     return reversed(topo)
 
+def reachable_from(start, adj):
+    visited = set()
+    def step(u):
+        if not u in visited:
+            visited.add(u)
+            for v in adj[u]:
+                step(v)
+    step(start)
+    return visited
+
 topo = list(topological_sort('svr', next))
 print(len(topo))
 si = topo.index('svr')
@@ -60,19 +70,28 @@ fi = topo.index('fft')
 di = topo.index('dac')
 oi = topo.index('out')
 print([si, fi, di, oi])
-mid = set(topo[fi:di+1])
+from_fft = reachable_from('fft', next)
+to_dest = reachable_from('dac', prev)
+mid = from_fft & to_dest
+print(len(from_fft), len(to_dest), len(mid))
+# exit()
+# mid = set(filter(lambda v: v in from_fft, topo[fi:di+1]))
 pruned = {}
 for u, vs in next.items():
     if u in mid:
         pruned[u] = set(filter(lambda v: v in mid, vs))
 print("pruned length", len(pruned))
 # print(path_count_bfs('dac', 'fft', prev))
-print(path_count_bfs('fft', 'dac', pruned))
-exit()
-print(path_count_bfs('fft', 'svr', prev))
+z = path_count_bfs('fft', 'dac', pruned)
+print(z)
+# print(path_count_bfs('fft', 'dac', pruned))
+z1 = path_count_bfs('fft', 'svr', prev)
+print(z1)
+z2 = path_count_bfs('dac', 'out', next)
+print(z2)
+print(z * z1 * z2)
 # print(path_count_bfs('dac', 'fft', prev))
 # print(path_count_bfs('fft', 'dac', next))
-print(path_count_bfs('dac', 'out', next)) # <-
 exit()
 
 q = ['you']
