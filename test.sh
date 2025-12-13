@@ -12,4 +12,5 @@ diff <(cat inputs/07 | python 07.py) <(echo "1537 18818811755665")
 diff <(cat inputs/08 | python 08.py) <(echo "102816 100011612")
 diff <(cat inputs/09 | python 09.py) <(echo "4759531084 1539238860")
 # diff <(cat inputs/10 | python 10.py) <(echo "438")
-# diff <(cat inputs/11 | python 11.py) <(echo "590")
+# 8 seconds!
+diff <(cat inputs/11 | python 11.py) <(echo "590 319473830844560")

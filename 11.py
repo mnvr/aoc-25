@@ -41,6 +41,34 @@ def path_count_bfs(source, dest, adj):
             q.append(v)
     return c
 
+def topological_sort(start, adj):
+    topo = []
+    visited = set()
+    def build_topo(u):
+        if not u in visited:
+            visited.add(u)
+            for v in adj[u]:
+                build_topo(v)
+            topo.append(u)
+    build_topo(start)
+    return reversed(topo)
+
+topo = list(topological_sort('svr', next))
+print(len(topo))
+si = topo.index('svr')
+fi = topo.index('fft')
+di = topo.index('dac')
+oi = topo.index('out')
+print([si, fi, di, oi])
+mid = set(topo[fi:di+1])
+pruned = {}
+for u, vs in next.items():
+    if u in mid:
+        pruned[u] = set(filter(lambda v: v in mid, vs))
+print("pruned length", len(pruned))
+# print(path_count_bfs('dac', 'fft', prev))
+print(path_count_bfs('fft', 'dac', pruned))
+exit()
 print(path_count_bfs('fft', 'svr', prev))
 # print(path_count_bfs('dac', 'fft', prev))
 # print(path_count_bfs('fft', 'dac', next))
