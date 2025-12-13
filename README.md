@@ -33,6 +33,7 @@ hyperfine --input inputs/01 'python 01.py'
 | 7   |  18 ms |
 | 8   | 276 ms |
 | 9   | 960 ms |
+| 11  | 830 ms |
 
 ## Ahas
 
@@ -60,3 +61,4 @@ hyperfine --input inputs/01 'python 01.py'
 | 4   | _Convolve_                  |
 | 5   | -                           |
 | 6   | _Transpose!_                |
+| 11  | _Prune_                     |

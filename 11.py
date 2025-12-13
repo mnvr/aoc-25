@@ -9,31 +9,19 @@ for line in sys.stdin:
         next[u].add(v)
         prev[v].add(u)
 
+def path_count_pruned(start, dest):
+    mid = reachable_from(start, next) & reachable_from(dest, prev)
+    pruned = {}
+    for u, vs in next.items():
+        if u in mid:
+            pruned[u] = set(filter(lambda v: v in mid, vs))
+    return path_count(start, dest, pruned)
+
 def path_count(source, dest, adj):
     q = [source]
     c = 0
-    i = 0
     while len(q):
-        if i % 10000 == 1:
-            print('.', end='', flush=True)
-        i += 1
         u = q.pop()
-        if u == dest:
-            c += 1
-            continue
-        for v in adj[u]:
-            q.append(v)
-    return c
-
-def path_count_bfs(source, dest, adj):
-    q = deque([source])
-    c = 0
-    i = 0
-    while len(q):
-        if i % 10000 == 1:
-            print('.', end='', flush=True)
-        i += 1
-        u = q.popleft()
         if u == dest:
             c += 1
             continue
@@ -63,78 +51,11 @@ def reachable_from(start, adj):
     step(start)
     return visited
 
-def path_count_pruned(start, dest):
-    mid = reachable_from(start, next) & reachable_from(dest, prev)
-    pruned = {}
-    for u, vs in next.items():
-        if u in mid:
-            pruned[u] = set(filter(lambda v: v in mid, vs))
-    return path_count(start, dest, pruned)
-
 topo = list(topological_sort('svr', next))
 
 m1, m2 = 'fft', 'dac'
 if topo.index('fft') > topo.index('dac'):
     m1, m2 = 'fft', 'dac'
-print(path_count_pruned('svr', m1) * path_count_pruned(m1, m2) * path_count_pruned(m2, 'out'))
-exit()
-
-
-si = topo.index('svr')
-fi = topo.index('fft')
-di = topo.index('dac')
-oi = topo.index('out')
-print([si, fi, di, oi])
-from_fft = reachable_from('fft', next)
-to_dest = reachable_from('dac', prev)
-mid = from_fft & to_dest
-print(len(from_fft), len(to_dest), len(mid))
-# exit()
-# mid = set(filter(lambda v: v in from_fft, topo[fi:di+1]))
-pruned = {}
-for u, vs in next.items():
-    if u in mid:
-        pruned[u] = set(filter(lambda v: v in mid, vs))
-print("pruned length", len(pruned))
-# print(path_count_bfs('dac', 'fft', prev))
-z = 1#path_count('fft', 'dac', pruned)
-print(z)
-# print(path_count_bfs('fft', 'dac', pruned))
-z1 = path_count('fft', 'svr', prev)
-print(z1)
-z2 = path_count('dac', 'out', next)
-print(z2)
-print(z * z1 * z2)
-# print(path_count_bfs('dac', 'fft', prev))
-# print(path_count_bfs('fft', 'dac', next))
-exit()
-
-q = ['you']
-c = 0
-while len(q):
-    u = q.pop()
-    if u == 'out':
-        c += 1
-        continue
-    for v in next[u]:
-        q.append(v)
-
-print(c)
-
-q = [('svr', 0, 'svr')]
-c = 0
-while len(q):
-    u, history, path = q.pop()
-    if u == 'out':
-        print(path)
-        if history == 3:
-            c += 1
-        continue
-    if u == 'dac':
-        history |= 2
-    if u == 'fft':
-        history |= 1
-    for v in next[u]:
-        q.append((v, history, path + ',' + (f'\033[1m{v}\033[0m' if v in ['dac', 'fft'] else v)))
-
-print(c)
+p1 = path_count_pruned('you', 'out')
+p2 = path_count_pruned('svr', m1) * path_count_pruned(m1, m2) * path_count_pruned(m2, 'out')
+print(p1, p2)
