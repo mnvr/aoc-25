@@ -1,6 +1,7 @@
 import sys
 from heapq import heappush, heappop
 from itertools import product
+from collections import defaultdict
 
 def parse(line):
     [lights, *buttons, joltage] = line.split()
@@ -42,25 +43,45 @@ def shortest_path(dest, buttons):
                 heappush(frontier, (dv, v))
 
 def shortest_path_astar(dest, buttons):
+    start = tuple([0] * len(dest))
+    start, dest = dest, start
     dn = list(dest)
 
     def neighbours(v):
-        ns = set()
+        ns = defaultdict(list)
+        v = list(v)
+
+        m = min(t for t in v if t > 0)
+        mi = v.index(m)
+        print(f"neighbours of {v} by relaxing {m}")
+
+        eligible_buttons = []
         for button in buttons:
-            n = list(v)
-            for i in button:
-                n[i] = n[i] + 1
-            if any(n[i] > dn[i] for i in range(len(dn))):
+            if mi in button:
+                eligible_buttons.append(button)
+
+        if not len(eligible_buttons):
+            print(f"no eligible buttons")
+            return []
+
+        variations = list(filter(lambda s: sum(s) == m, product(*([range(m+1)] * len(eligible_buttons)))))
+        print(f"variations {variations}")
+        for variation in variations:
+            new_v = v[:]
+            for i, c in enumerate(variation):
+                apply_button(new_v, eligible_buttons[i], c)
+            if any([x < 0 for x in new_v]):
                 continue
-            ns.add(tuple(n))
-        return ns
+            print(f"applied variation {variation} to button {v} to obtain {new_v}")
+            ns[tuple(new_v)].append(m)
+
+        print(ns)
+        return [(vn, incr) for vn, incrs in ns.items() for incr in incrs]
 
     def potential(v):
-        z = sum(a - b for a, b in zip(dest, v))
-        assert z >= 0
+        z = sum(v)
+        assert z >= 0, v
         return z
-
-    start = tuple([0] * len(dest))
 
     dist = {}
     frontier = []
@@ -74,10 +95,10 @@ def shortest_path_astar(dest, buttons):
             return du
 
         # relax all neighbours
-        for v in neighbours(u):
+        for v, inc in neighbours(u):
             dv = dist.get(v)
-            if dv is None or dv > du + 1:
-                dv = du + 1
+            if dv is None or dv > du + inc:
+                dv = du + inc
                 dist[v] = dv
                 heappush(frontier, (dv + potential(v), dv, v))
 
@@ -140,7 +161,8 @@ def relax(dest, buttons):
 def process(machine):
     lights, buttons, joltage = machine
     s1 = shortest_path(lights, buttons)
-    s2 = dp(joltage, buttons)
+    # s2 = dp(joltage, buttons)
+    s2 = shortest_path_astar(joltage, buttons)
     print(s1, s2, machine)
     return (s1, s2)
 
