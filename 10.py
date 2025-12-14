@@ -42,7 +42,7 @@ def shortest_path(dest, buttons):
                 dist[v] = dv
                 heappush(frontier, (dv, v))
 
-def relax(dest, buttons):
+def relax(dest, buttons, er):
     if max(dest) == 0:
         return 0
 
@@ -65,6 +65,8 @@ def relax(dest, buttons):
         # print(f"no eligible buttons")
         return None
 
+    eligible_buttons = sorted(eligible_buttons, key=len)
+
     variations = list(filter(lambda s: sum(s) == m, product(*([range(m+1)] * len(eligible_buttons)))))
     # print(f"variations {variations}")
     best = None
@@ -73,19 +75,23 @@ def relax(dest, buttons):
         for i, c in enumerate(variation):
             for j in eligible_buttons[i]:
                 new_dest[j] -= c
-        rest = relax(new_dest, remaining_buttons)
+        rest = relax(new_dest, remaining_buttons, er)
         if rest is not None:
             if best is None:
                 best = rest + m
+                if er: return best
             else:
                 best = min(best, rest + m)
+                if er: return best
 
     return best
 
 def process(machine):
     lights, buttons, joltage = machine
     s1 = shortest_path(lights, buttons)
-    s2 = relax(list(joltage), buttons)
+    s2 = relax(list(joltage), buttons, False)
+    s2ER = relax(list(joltage), buttons, True)
+    assert s2 == s2ER, [s2, s2ER]
     print(s1, s2, machine)
     return (s1, s2)
 
