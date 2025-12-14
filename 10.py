@@ -42,7 +42,7 @@ def shortest_path(dest, buttons):
                 dist[v] = dv
                 heappush(frontier, (dv, v))
 
-def relax(dest, buttons, er):
+def relax(dest, buttons):
     if max(dest) == 0:
         return 0
 
@@ -53,7 +53,6 @@ def relax(dest, buttons, er):
     # print(f"trying to make {dest} from {buttons} by relaxing {m}")
 
     mi = dest.index(m)
-    # eligible_buttons = list(filter(lambda button: mi in button, buttons))
     eligible_buttons, remaining_buttons = [], []
     for button in buttons:
         if mi in button:
@@ -67,31 +66,32 @@ def relax(dest, buttons, er):
 
     eligible_buttons = sorted(eligible_buttons, key=len)
 
-    variations = list(filter(lambda s: sum(s) == m, product(*([range(m+1)] * len(eligible_buttons)))))
-    # print(f"variations {variations}")
+    variations = filter(lambda s: sum(s) == m, product(*([range(m+1)] * len(eligible_buttons))))
+    greedy = dest.count(m) == 1
     best = None
+    best_variation = None
     for variation in variations:
         new_dest = dest[:]
         for i, c in enumerate(variation):
             for j in eligible_buttons[i]:
                 new_dest[j] -= c
-        rest = relax(new_dest, remaining_buttons, er)
+        rest = relax(new_dest, remaining_buttons)
         if rest is not None:
             if best is None:
                 best = rest + m
-                if er: return best
-            else:
+                best_variation = variation
+                if greedy: return best
+            elif best > rest + m:
                 best = min(best, rest + m)
-                if er: return best
+                best_variation = variation
+                if greedy: return best
 
     return best
 
 def process(machine):
     lights, buttons, joltage = machine
     s1 = shortest_path(lights, buttons)
-    s2 = relax(list(joltage), buttons, False)
-    s2ER = relax(list(joltage), buttons, True)
-    assert s2 == s2ER, [s2, s2ER]
+    s2 = relax(list(joltage), buttons)
     print(s1, s2, machine)
     return (s1, s2)
 
