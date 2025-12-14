@@ -2,58 +2,22 @@ import sys
 from collections import defaultdict, deque
 
 next = defaultdict(set)
-prev = defaultdict(set)
 for line in sys.stdin:
     u, vs = line.split(':')
     for v in vs.split():
         next[u].add(v)
-        prev[v].add(u)
 
-def path_count(u, dest, adj):
+def path_count(u, dest):
     if u == dest:
         return 1
-    return sum(path_count(v, dest, next) for v in adj[u])
+    return sum((path_count(v, dest) for v in next[u]), 0)
 
-p1 = path_count('you', 'out', next)
-print(p1)
-exit()
+p1 = path_count('you', 'out')
 
-def path_count_pruned(start, dest):
-    mid = reachable_from(start, next) & reachable_from(dest, prev)
-    pruned = {}
-    for u, vs in next.items():
-        if u in mid:
-            pruned[u] = set(filter(lambda v: v in mid, vs))
-    return path_count(start, dest, pruned)
-
-
-def topological_sort(start, adj):
-    topo = []
-    visited = set()
-    def build_topo(u):
-        if not u in visited:
-            visited.add(u)
-            for v in adj[u]:
-                build_topo(v)
-            topo.append(u)
-    build_topo(start)
-    return reversed(topo)
-
-def reachable_from(start, adj):
-    visited = set()
-    def step(u):
-        if not u in visited:
-            visited.add(u)
-            for v in adj[u]:
-                step(v)
-    step(start)
-    return visited
-
-topo = list(topological_sort('svr', next))
-
-m1, m2 = 'fft', 'dac'
-if topo.index('fft') > topo.index('dac'):
-    m1, m2 = 'fft', 'dac'
-p1 = path_count_pruned('you', 'out')
-p2 = path_count_pruned('svr', m1) * path_count_pruned(m1, m2) * path_count_pruned(m2, 'out')
+m1 = path_count('fft', 'dac')
+m2 = path_count('dac', 'fft')
+if m1:
+    p2 = path_count('svr', 'fft') * m1 * path_count('dac', 'out')
+else:
+    p2 = path_count('svr', 'dac') * m2 * path_count('fft', 'out')
 print(p1, p2)
