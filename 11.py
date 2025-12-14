@@ -12,7 +12,7 @@ for line in sys.stdin:
 def path_count(u, dest):
     if u == dest:
         return 1
-    return sum((path_count(v, dest) for v in next[u]), 0)
+    return sum(path_count(v, dest) for v in next[u])
 
 p1 = path_count('you', 'out')
 
