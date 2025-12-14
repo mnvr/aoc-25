@@ -58,12 +58,15 @@ def shortest_path_astar(dest, buttons):
         eligible_buttons = []
         for button in buttons:
             if mi in button:
+                if any([v[i] == 0 for i in button]):
+                    continue
                 eligible_buttons.append(button)
 
         if not len(eligible_buttons):
             print(f"no eligible buttons")
             return []
 
+        print("will vary")
         variations = list(filter(lambda s: sum(s) == m, product(*([range(m+1)] * len(eligible_buttons)))))
         print(f"variations {variations}")
         for variation in variations:
@@ -75,7 +78,7 @@ def shortest_path_astar(dest, buttons):
             print(f"applied variation {variation} to button {v} to obtain {new_v}")
             ns[tuple(new_v)].append(m)
 
-        print(ns)
+        # print(ns)
         return [(vn, incr) for vn, incrs in ns.items() for incr in incrs]
 
     def potential(v):
@@ -83,6 +86,7 @@ def shortest_path_astar(dest, buttons):
         assert z >= 0, v
         return z
 
+    dead_ends = set()
     dist = {}
     frontier = []
 
@@ -91,11 +95,19 @@ def shortest_path_astar(dest, buttons):
 
     while len(frontier):
         _, du, u = heappop(frontier)
+        print(len(frontier), len(dead_ends))
         if u == dest:
             return du
 
+        if u in dead_ends:
+            continue
+
         # relax all neighbours
-        for v, inc in neighbours(u):
+        nu = neighbours(u)
+        if len(nu) == 0:
+            dead_ends.add(u)
+            continue
+        for v, inc in nu: # neighbours(u):
             dv = dist.get(v)
             if dv is None or dv > du + inc:
                 dv = du + inc
