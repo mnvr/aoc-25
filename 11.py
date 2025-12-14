@@ -9,6 +9,15 @@ for line in sys.stdin:
         next[u].add(v)
         prev[v].add(u)
 
+def path_count(u, dest, adj):
+    if u == dest:
+        return 1
+    return sum(path_count(v, dest, next) for v in adj[u])
+
+p1 = path_count('you', 'out', next)
+print(p1)
+exit()
+
 def path_count_pruned(start, dest):
     mid = reachable_from(start, next) & reachable_from(dest, prev)
     pruned = {}
@@ -17,17 +26,6 @@ def path_count_pruned(start, dest):
             pruned[u] = set(filter(lambda v: v in mid, vs))
     return path_count(start, dest, pruned)
 
-def path_count(source, dest, adj):
-    q = [source]
-    c = 0
-    while len(q):
-        u = q.pop()
-        if u == dest:
-            c += 1
-            continue
-        for v in adj[u]:
-            q.append(v)
-    return c
 
 def topological_sort(start, adj):
     topo = []
