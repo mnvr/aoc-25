@@ -1,5 +1,5 @@
 import sys
-from collections import defaultdict, deque
+from collections import defaultdict
 from functools import cache
 
 next = defaultdict(set)
@@ -10,9 +10,7 @@ for line in sys.stdin:
 
 @cache
 def path_count(u, dest):
-    if u == dest:
-        return 1
-    return sum(path_count(v, dest) for v in next[u])
+    return u == dest or sum(path_count(v, dest) for v in next[u])
 
 p1 = path_count('you', 'out')
 
