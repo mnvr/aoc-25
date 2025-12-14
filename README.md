@@ -33,7 +33,7 @@ hyperfine --input inputs/01 'python 01.py'
 | 7   |  18 ms |
 | 8   | 276 ms |
 | 9   | 960 ms |
-| 11  | 830 ms |
+| 11  |  20 ms |
 
 ## Ahas
 
@@ -51,6 +51,8 @@ hyperfine --input inputs/01 'python 01.py'
 
 - **Day 8**: `sorted(combinations(boxes, 2), key=lambda p: math.dist(*p))`, frozensets for equality` and other great tips by _[@AlexTelon](https://www.reddit.com/r/adventofcode/comments/1ph3tfc/2025_day_8_solutions/nswkcy1/)_
 
+- **Day 11**: Recursive path counting with `functool.cache` — [Reddit megathread](https://old.reddit.com/r/adventofcode/comments/1pjp1rm/2025_day_11_solutions/)
+
 ## Oblique strategies
 
 | Day | Oblique strategy            |
@@ -61,4 +63,4 @@ hyperfine --input inputs/01 'python 01.py'
 | 4   | _Convolve_                  |
 | 5   | -                           |
 | 6   | _Transpose!_                |
-| 11  | _Prune_                     |
+| 11  | _Recurse, cache_            |

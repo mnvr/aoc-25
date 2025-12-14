@@ -1,5 +1,6 @@
 import sys
 from collections import defaultdict, deque
+from functools import cache
 
 next = defaultdict(set)
 for line in sys.stdin:
@@ -7,6 +8,7 @@ for line in sys.stdin:
     for v in vs.split():
         next[u].add(v)
 
+@cache
 def path_count(u, dest):
     if u == dest:
         return 1
